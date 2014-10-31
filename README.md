@@ -1,4 +1,4 @@
-# ElasticsearchBundle
+# ElasticsearchBundle [![Build Status](https://travis-ci.org/M6Web/ElasticsearchBundle.png?branch=master)](https://travis-ci.org/M6Web/ElasticsearchBundle)
 
 Integration of the [Elasticsearch official PHP client](http://github.com/elasticsearch/elasticsearch-php) within a Symfony Project.
 
