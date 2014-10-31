@@ -102,3 +102,6 @@ You can launch the unit tests using:
 - Dispatch some events to the Symfony2 eventDispatcher
 - Integrate debugging/profiling informations to the Symfony2 Web Debug Toolbar
 
+## License
+
+ElasticsearchBundle is licensed under the [MIT license](LICENSE).
