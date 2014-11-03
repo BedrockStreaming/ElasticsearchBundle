@@ -2,6 +2,7 @@
     "name": "m6web/elasticsearch-bundle",
     "type": "symfony-bundle",
     "description": "Symfony2 Bundle on top of elasticsearch/elasticsearch-php",
+    "license": "MIT",
     "authors": [
         {
             "name": "Matthieu Guillermin",
