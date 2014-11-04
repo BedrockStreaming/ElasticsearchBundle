@@ -24,6 +24,9 @@ class M6WebElasticsearchExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('services.yml');
+
         if (isset($config['clients'])) {
 
             foreach ($config['clients'] as $clientName => $clientConfig) {
@@ -47,6 +50,13 @@ class M6WebElasticsearchExtension extends Extension
     protected function createElasticsearchClient(ContainerBuilder $container, $name, $config)
     {
         $config = $this->convertServiceNamesToReferences($config);
+
+        if ($container->getParameter('kernel.debug')) {
+            $logger                = new Reference('m6web_elasticsearch.logger');
+            $config['logging']     = true;
+            $config['logObject']   = $logger;
+            $config['traceObject'] = $logger;
+        }
 
         $definition = new Definition('Elasticsearch\Client');
         $definition->setArguments([$config]);

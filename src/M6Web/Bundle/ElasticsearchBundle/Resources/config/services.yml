@@ -1,0 +1,14 @@
+parameters:
+    m6web_elasticsearch.data_collector.class: M6Web\Bundle\ElasticsearchBundle\DataCollector\ElasticsearchDataCollector
+    m6web_elasticsearch.logger.class: M6Web\Bundle\ElasticsearchBundle\Logger\ElasticsearchLogger
+
+services:
+    m6web_elasticsearch.data_collector:
+        class: %m6web_elasticsearch.data_collector.class%
+        tags:
+            - { name: data_collector, template: "M6WebElasticsearchBundle:Collector:elasticsearch", id: elasticsearch }
+        arguments:
+            - @m6web_elasticsearch.logger
+
+    m6web_elasticsearch.logger:
+        class: %m6web_elasticsearch.logger.class%
