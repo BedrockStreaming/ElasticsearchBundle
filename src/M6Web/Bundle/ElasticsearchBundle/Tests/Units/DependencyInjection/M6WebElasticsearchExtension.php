@@ -224,4 +224,4 @@ class M6WebElasticsearchExtension extends test
 
         return $this;
     }
-} 
+}
