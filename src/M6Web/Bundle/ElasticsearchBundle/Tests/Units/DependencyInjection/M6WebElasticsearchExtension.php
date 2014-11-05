@@ -7,8 +7,6 @@ use mageekguy\atoum\test;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
-require_once __DIR__.'/../../../../../../../vendor/autoload.php';
-
 /**
  * Tests of the M6WebElasticsearchExtension class
  */
