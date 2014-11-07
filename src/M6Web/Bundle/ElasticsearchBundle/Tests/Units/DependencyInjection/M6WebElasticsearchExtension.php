@@ -5,8 +5,7 @@ namespace M6Web\Bundle\ElasticsearchBundle\Tests\Units\DependencyInjection;
 use M6Web\Bundle\ElasticsearchBundle\DependencyInjection\M6WebElasticsearchExtension as TestedClass;
 use mageekguy\atoum\test;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-
-require_once __DIR__.'/../../../../../../../vendor/autoload.php';
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
 /**
  * Tests of the M6WebElasticsearchExtension class
@@ -26,7 +25,9 @@ class M6WebElasticsearchExtension extends test
             ]]
         ];
 
-        $container = new \Symfony\Component\DependencyInjection\ContainerBuilder();
+        $parameterBag = new ParameterBag(array('kernel.debug' => true));
+
+        $container = new \Symfony\Component\DependencyInjection\ContainerBuilder($parameterBag);
 
         $this->if($extension = new TestedClass())
             ->exception(function() use($extension, $configs, $container) {
@@ -48,7 +49,9 @@ class M6WebElasticsearchExtension extends test
             ]]
         ];
 
-        $container = new \Symfony\Component\DependencyInjection\ContainerBuilder();
+        $parameterBag = new ParameterBag(array('kernel.debug' => true));
+
+        $container = new \Symfony\Component\DependencyInjection\ContainerBuilder($parameterBag);
 
         $this->if($extension = new TestedClass())
             ->exception(function() use($extension, $configs, $container) {
@@ -73,7 +76,9 @@ class M6WebElasticsearchExtension extends test
             ]]
         ];
 
-        $container = new \Symfony\Component\DependencyInjection\ContainerBuilder();
+        $parameterBag = new ParameterBag(array('kernel.debug' => true));
+
+        $container = new \Symfony\Component\DependencyInjection\ContainerBuilder($parameterBag);
 
         $this->if($extension = new TestedClass())
         ->when($extension->load($configs, $container))
@@ -102,7 +107,9 @@ class M6WebElasticsearchExtension extends test
             ]]
         ];
 
-        $container = new \Symfony\Component\DependencyInjection\ContainerBuilder();
+        $parameterBag = new ParameterBag(array('kernel.debug' => true));
+
+        $container = new \Symfony\Component\DependencyInjection\ContainerBuilder($parameterBag);
 
         $this->if($extension = new TestedClass())
         ->when($extension->load($configs, $container))
@@ -134,7 +141,9 @@ class M6WebElasticsearchExtension extends test
             'default_client' => 'my_second_client'
         ]];
 
-        $container = new \Symfony\Component\DependencyInjection\ContainerBuilder();
+        $parameterBag = new ParameterBag(array('kernel.debug' => true));
+
+        $container = new \Symfony\Component\DependencyInjection\ContainerBuilder($parameterBag);
 
         $this->if($extension = new TestedClass())
         ->when($extension->load($configs, $container))
@@ -161,7 +170,9 @@ class M6WebElasticsearchExtension extends test
             ],
         ]];
 
-        $container = new \Symfony\Component\DependencyInjection\ContainerBuilder();
+        $parameterBag = new ParameterBag(array('kernel.debug' => true));
+
+        $container = new \Symfony\Component\DependencyInjection\ContainerBuilder($parameterBag);
         $container->set('logger', new \StdClass());
 
         $this->if($extension = new TestedClass())
@@ -211,4 +222,4 @@ class M6WebElasticsearchExtension extends test
 
         return $this;
     }
-} 
+}
