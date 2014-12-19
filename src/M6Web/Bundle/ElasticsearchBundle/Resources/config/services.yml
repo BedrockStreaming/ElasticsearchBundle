@@ -12,3 +12,5 @@ services:
 
     m6web_elasticsearch.logger:
         class: %m6web_elasticsearch.logger.class%
+        arguments:
+            - @event_dispatcher
