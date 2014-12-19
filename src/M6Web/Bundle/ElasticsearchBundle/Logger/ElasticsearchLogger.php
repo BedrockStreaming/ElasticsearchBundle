@@ -3,19 +3,12 @@
 namespace M6Web\Bundle\ElasticsearchBundle\Logger;
 
 use Elasticsearch\Common\EmptyLogger;
-use M6Web\Bundle\ElasticsearchBundle\EventDispatcher\ElasticsearchEvent;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * ElasticsearchLogger
  */
 class ElasticsearchLogger extends EmptyLogger
 {
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
     /**
      * Contexts
      *
@@ -45,14 +38,6 @@ class ElasticsearchLogger extends EmptyLogger
     private $queries;
 
     /**
-     * @param EventDispatcherInterface $eventDispatcher
-     */
-    public function __construct($eventDispatcher)
-    {
-        $this->eventDispatcher = $eventDispatcher;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function debug($message, array $context = array())
@@ -72,8 +57,6 @@ class ElasticsearchLogger extends EmptyLogger
         } elseif (preg_match('/^curl/', $message)) {
             $this->curlCommands[] = $message;
         }
-
-        $this->dispatchEventFromContext($context);
     }
 
     /**
@@ -84,8 +67,6 @@ class ElasticsearchLogger extends EmptyLogger
         if ($message == 'Request Failure:') {
             $this->contexts[] = $context;
         }
-
-        $this->dispatchEventFromContext($context);
     }
 
     /**
@@ -131,25 +112,5 @@ class ElasticsearchLogger extends EmptyLogger
         }
 
         return $queries;
-    }
-
-    /**
-     * Dispatch an event
-     *
-     * @param array $context the log context
-     */
-    protected function dispatchEventFromContext($context)
-    {
-        if (!empty($context) && isset($context['uri'])) {
-
-            $event = new ElasticsearchEvent();
-            $event
-                ->setUri($context['uri'])
-                ->setMethod($context['method'])
-                ->setStatusCode($context['HTTP code'])
-                ->setDuration($context['duration'] * 1000); // Convert from seconds to milliseconds
-
-            $this->eventDispatcher->dispatch('m6web.elasticsearch', $event);
-        }
     }
 }

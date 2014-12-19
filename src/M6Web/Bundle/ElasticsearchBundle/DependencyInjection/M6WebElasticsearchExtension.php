@@ -58,6 +58,14 @@ class M6WebElasticsearchExtension extends Extension
             $config['traceObject'] = $logger;
         }
 
+        if (!isset($config['connectionClass']) || $config['connectionClass'] === '\Elasticsearch\Connections\GuzzleConnection') {
+            $config['connectionClass'] = '\M6Web\Bundle\ElasticsearchBundle\Connection\GuzzleConnectionDecorator';
+        }
+        if (isset($config['connectionClass']) && $config['connectionClass'] === '\Elasticsearch\Connections\CurlMultiConnection') {
+            $config['connectionClass'] = '\M6Web\Bundle\ElasticsearchBundle\Connection\CurlMultiConnectionDecorator';
+        }
+        $config['connectionParams']['event_dispatcher'] = new Reference('event_dispatcher');
+
         $definition = new Definition('Elasticsearch\Client');
         $definition->setArguments([$config]);
         $container->setDefinition('m6web_elasticsearch.client.'.$name, $definition);
