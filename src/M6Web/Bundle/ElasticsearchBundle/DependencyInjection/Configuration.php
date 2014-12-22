@@ -30,6 +30,7 @@ class Configuration implements ConfigurationInterface
                         ->arrayNode('hosts')
                             ->isRequired()
                             ->requiresAtLeastOneElement()
+                            ->performNoDeepMerging()
                             ->prototype('scalar')->end()
                         ->end()
                         ->scalarNode('connectionClass')->end()
