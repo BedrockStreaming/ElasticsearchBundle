@@ -79,6 +79,7 @@ class M6WebElasticsearchExtension extends test
         $parameterBag = new ParameterBag(array('kernel.debug' => true));
 
         $container = new \Symfony\Component\DependencyInjection\ContainerBuilder($parameterBag);
+        $container->set('event_dispatcher', new \StdClass());
 
         $this->if($extension = new TestedClass())
         ->when($extension->load($configs, $container))
@@ -110,6 +111,7 @@ class M6WebElasticsearchExtension extends test
         $parameterBag = new ParameterBag(array('kernel.debug' => true));
 
         $container = new \Symfony\Component\DependencyInjection\ContainerBuilder($parameterBag);
+        $container->set('event_dispatcher', new \StdClass());
 
         $this->if($extension = new TestedClass())
         ->when($extension->load($configs, $container))
@@ -144,6 +146,7 @@ class M6WebElasticsearchExtension extends test
         $parameterBag = new ParameterBag(array('kernel.debug' => true));
 
         $container = new \Symfony\Component\DependencyInjection\ContainerBuilder($parameterBag);
+        $container->set('event_dispatcher', new \StdClass());
 
         $this->if($extension = new TestedClass())
         ->when($extension->load($configs, $container))
@@ -174,6 +177,7 @@ class M6WebElasticsearchExtension extends test
 
         $container = new \Symfony\Component\DependencyInjection\ContainerBuilder($parameterBag);
         $container->set('logger', new \StdClass());
+        $container->set('event_dispatcher', new \StdClass());
 
         $this->if($extension = new TestedClass())
         ->when($extension->load($configs, $container))

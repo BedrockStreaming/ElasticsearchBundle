@@ -89,6 +89,12 @@ m6web_elasticsearch:
             logLevel: warning
 ```
 
+### Events
+
+The bundle dispatches `\M6Web\Bundle\ElasticsearchBundle\EventDispatcher\ElasticsearchEvent` events containing various informations about the Elasticsearch requests. 
+
+Events are fired with the name `m6web.elasticsearch`. 
+
 ## Tests
 
 You can launch the unit tests using: 
