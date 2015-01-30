@@ -27,10 +27,12 @@ class M6WebElasticsearchExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
+        $clientClass = isset($config['client_class']) ? $config['client_class'] : 'Elasticsearch\Client';
+
         if (isset($config['clients'])) {
 
             foreach ($config['clients'] as $clientName => $clientConfig) {
-                $this->createElasticsearchClient($container, $clientName, $clientConfig);
+                $this->createElasticsearchClient($container, $clientClass, $clientName, $clientConfig);
             }
 
             if (isset($config['default_client'])) {
@@ -44,10 +46,11 @@ class M6WebElasticsearchExtension extends Extension
      * Add a new Elasticsearch client definition in the container
      *
      * @param ContainerBuilder $container
+     * @param string           $class
      * @param string           $name
      * @param array            $config
      */
-    protected function createElasticsearchClient(ContainerBuilder $container, $name, $config)
+    protected function createElasticsearchClient(ContainerBuilder $container, $class, $name, $config)
     {
         $config = $this->convertServiceNamesToReferences($config);
 
@@ -66,7 +69,7 @@ class M6WebElasticsearchExtension extends Extension
         }
         $config['connectionParams']['event_dispatcher'] = new Reference('event_dispatcher');
 
-        $definition = new Definition('Elasticsearch\Client');
+        $definition = new Definition($class);
         $definition->setArguments([$config]);
         $container->setDefinition('m6web_elasticsearch.client.'.$name, $definition);
     }
