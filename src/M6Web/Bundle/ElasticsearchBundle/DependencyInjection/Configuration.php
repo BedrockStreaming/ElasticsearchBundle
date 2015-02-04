@@ -23,6 +23,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('default_client')->end()
+                ->scalarNode('client_class')->end()
                 ->arrayNode('clients')
                     ->useAttributeAsKey('id')
                     ->prototype('array')
