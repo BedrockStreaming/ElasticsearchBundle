@@ -16,6 +16,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class GuzzleConnectionDecorator extends GuzzleConnection
 {
+    use TookExtractor;
+
     /**
      * @var EventDispatcherInterface
      */
@@ -45,11 +47,14 @@ class GuzzleConnectionDecorator extends GuzzleConnection
             throw $e;
         }
 
+        $took = $this->extractTookFromResponse($response);
+
         $this->dispatchEvent(
             $method,
             $uri,
             $response['status'],
-            $response['info']['total_time'] * 1000  // Convert from seconds to milliseconds
+            $response['info']['total_time'] * 1000, // Convert from seconds to milliseconds
+            $took
         );
 
         return $response;
@@ -62,8 +67,9 @@ class GuzzleConnectionDecorator extends GuzzleConnection
      * @param string $uri
      * @param int    $statusCode
      * @param float  $duration
+     * @param int    $took
      */
-    protected function dispatchEvent($method, $uri, $statusCode, $duration)
+    protected function dispatchEvent($method, $uri, $statusCode, $duration, $took = null)
     {
         if ($this->eventDispatcher !== null) {
             $event = new ElasticsearchEvent();
@@ -71,10 +77,10 @@ class GuzzleConnectionDecorator extends GuzzleConnection
                 ->setUri($uri)
                 ->setMethod($method)
                 ->setStatusCode($statusCode)
-                ->setDuration($duration);
+                ->setDuration($duration)
+                ->setTook($took);
 
             $this->eventDispatcher->dispatch('m6web.elasticsearch', $event);
         }
     }
-
 }

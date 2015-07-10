@@ -33,6 +33,13 @@ class ElasticsearchEvent extends Event
     private $statusCode;
 
     /**
+     * Time in milliseconds for Elasticsearch to execute the search
+     *
+     * @var int
+     */
+    private $took;
+
+    /**
      * @return float
      */
     public function getDuration()
@@ -112,4 +119,27 @@ class ElasticsearchEvent extends Event
         return $this;
     }
 
+    /**
+     * Get took
+     *
+     * @return int
+     */
+    public function getTook()
+    {
+        return $this->took;
+    }
+
+    /**
+     * Set took
+     *
+     * @param int $took
+     *
+     * @return $this
+     */
+    public function setTook($took)
+    {
+        $this->took = $took;
+
+        return $this;
+    }
 }
