@@ -16,15 +16,12 @@ trait TookExtractor
      */
     protected function extractTookFromResponse(array $response)
     {
-        if (!isset($response['text'])) {
+        if (isset($response['text'])) {
+            $matches = array();
+            if (preg_match('/\"took\":(\d+)/', $response['text'], $matches)) {
 
-            return null;
-        }
-
-        $matches = array();
-        if (preg_match('/\"took\":(\d+)/', $response['text'], $matches)) {
-
-            return (int) $matches[1];
+                return (int) $matches[1];
+            }
         }
 
         return null;
