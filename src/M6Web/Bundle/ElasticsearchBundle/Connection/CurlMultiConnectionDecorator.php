@@ -16,6 +16,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class CurlMultiConnectionDecorator extends CurlMultiConnection
 {
+    use TookExtractor;
+
     /**
      * @var EventDispatcherInterface
      */
@@ -45,11 +47,14 @@ class CurlMultiConnectionDecorator extends CurlMultiConnection
             throw $e;
         }
 
+        $took = $this->extractTookFromResponse($response);
+
         $this->dispatchEvent(
             $method,
             $uri,
-            $response['requestInfo']['http_code'],
-            $response['requestInfo']['total_time'] * 1000  // Convert from seconds to milliseconds
+            $response['status'],
+            $response['info']['total_time'] * 1000, // Convert from seconds to milliseconds
+            $took
         );
 
         return $response;
@@ -62,8 +67,9 @@ class CurlMultiConnectionDecorator extends CurlMultiConnection
      * @param string $uri
      * @param int    $statusCode
      * @param float  $duration
+     * @param int    $took
      */
-    protected function dispatchEvent($method, $uri, $statusCode, $duration)
+    protected function dispatchEvent($method, $uri, $statusCode, $duration, $took = null)
     {
         if ($this->eventDispatcher !== null) {
             $event = new ElasticsearchEvent();
@@ -71,11 +77,10 @@ class CurlMultiConnectionDecorator extends CurlMultiConnection
                 ->setUri($uri)
                 ->setMethod($method)
                 ->setStatusCode($statusCode)
-                ->setDuration($duration);
+                ->setDuration($duration)
+                ->setTook($took);
 
             $this->eventDispatcher->dispatch('m6web.elasticsearch', $event);
         }
     }
-
-
 }
