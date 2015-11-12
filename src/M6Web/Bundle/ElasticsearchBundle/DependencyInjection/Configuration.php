@@ -23,7 +23,6 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('default_client')->end()
-                ->scalarNode('client_class')->end()
                 ->arrayNode('clients')
                     ->useAttributeAsKey('id')
                     ->prototype('array')
@@ -34,29 +33,12 @@ class Configuration implements ConfigurationInterface
                             ->performNoDeepMerging()
                             ->prototype('scalar')->end()
                         ->end()
-                        ->scalarNode('connectionClass')->end()
-                        ->scalarNode('connectionFactoryClass')->end()
-                        ->scalarNode('connectionPoolClass')->end()
-                        ->scalarNode('selectorClass')->end()
-                        ->scalarNode('serializerClass')->end()
-                        ->booleanNode('sniffOnStart')->end()
-                        ->variableNode('connectionParams')->end()
-                        ->booleanNode('logging')->end()
-                        ->scalarNode('logObject')->end()
-                        ->scalarNode('logPath')->end()
-                        ->scalarNode('logLevel')->end()
-                        ->scalarNode('traceObject')->end()
-                        ->scalarNode('tracePath')->end()
-                        ->scalarNode('traceLevel')->end()
-                        ->variableNode('guzzleOptions')->end()
-                        ->variableNode('connectionPoolParams')->end()
                         ->integerNode('retries')->end()
+                        ->variableNode('headers')->end()
                     ->end()
                 ->end()
             ->end();
 
         return $treeBuilder;
     }
-
-
 }

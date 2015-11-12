@@ -27,53 +27,89 @@ class M6WebElasticsearchExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
-        $clientClass = isset($config['client_class']) ? $config['client_class'] : 'Elasticsearch\Client';
-
         if (isset($config['clients'])) {
-
             foreach ($config['clients'] as $clientName => $clientConfig) {
-                $this->createElasticsearchClient($container, $clientClass, $clientName, $clientConfig);
+                $this->createElasticsearchClient($container, $clientName, $clientConfig);
             }
 
             if (isset($config['default_client'])) {
-                $container->setAlias('m6web_elasticsearch.client.default', sprintf('m6web_elasticsearch.client.%s', $config['default_client']));
+                $container->setAlias(
+                    'm6web_elasticsearch.client.default',
+                    sprintf('m6web_elasticsearch.client.%s', $config['default_client'])
+                );
             }
         }
-
     }
 
     /**
      * Add a new Elasticsearch client definition in the container
      *
      * @param ContainerBuilder $container
-     * @param string           $class
      * @param string           $name
      * @param array            $config
      */
-    protected function createElasticsearchClient(ContainerBuilder $container, $class, $name, $config)
+    protected function createElasticsearchClient(ContainerBuilder $container, $name, $config)
     {
-        $config = $this->convertServiceNamesToReferences($config);
+        $definitionId = 'm6web_elasticsearch.client.'.$name;
+
+        $handlerId = $this->createHandler($container, $config, $definitionId);
+
+        $builderConfig = [
+            'hosts'   => $config['hosts'],
+            'handler' => new Reference($handlerId),
+        ];
 
         if ($container->getParameter('kernel.debug')) {
-            $logger                = new Reference('m6web_elasticsearch.logger');
-            $config['logging']     = true;
-            $config['logObject']   = $logger;
-            $config['traceObject'] = $logger;
+            $builderConfig['logger'] = new Reference('m6web_elasticsearch.logger');
         }
 
-        if (!isset($config['connectionClass']) || $config['connectionClass'] === '\Elasticsearch\Connections\GuzzleConnection') {
-            $config['connectionClass'] = '\M6Web\Bundle\ElasticsearchBundle\Connection\GuzzleConnectionDecorator';
-        }
-        if (isset($config['connectionClass']) && $config['connectionClass'] === '\Elasticsearch\Connections\CurlMultiConnection') {
-            $config['connectionClass'] = '\M6Web\Bundle\ElasticsearchBundle\Connection\CurlMultiConnectionDecorator';
-        }
-        $config['connectionParams']['event_dispatcher'] = new Reference('event_dispatcher');
-
-        $definition = new Definition($class);
-        $definition->setArguments([$config]);
-        $container->setDefinition('m6web_elasticsearch.client.'.$name, $definition);
+        $definition = (new Definition('Elasticsearch\Client'))
+            ->setFactoryClass('Elasticsearch\ClientBuilder')
+            ->setFactoryMethod('fromConfig')
+            ->setArguments([$builderConfig]);
+        $container->setDefinition($definitionId, $definition);
     }
 
+    /**
+     * Create request handler
+     *
+     * @param ContainerBuilder $container
+     * @param array            $config
+     * @param string           $definitionId
+     *
+     * @return string
+     */
+    protected function createHandler(ContainerBuilder $container, array $config, $definitionId)
+    {
+        // cURL handler
+        $singleHandler   = (new Definition('GuzzleHttp\Ring\Client\CurlHandler'))
+            ->setPublic(false)
+            ->setFactoryClass('Elasticsearch\ClientBuilder')
+            ->setFactoryMethod('defaultHandler');
+        $singleHandlerId = $definitionId.'.single_handler';
+        $container->setDefinition($singleHandlerId, $singleHandler);
+
+        // Headers handler
+        $headersHandler = (new Definition('M6Web\Bundle\ElasticsearchBundle\Handler\HeadersHandler'))
+            ->setPublic(false)
+            ->setArguments([new Reference($singleHandlerId)]);
+        if (isset($config['headers'])) {
+            foreach ($config['headers'] as $key => $value) {
+                $headersHandler->addMethodCall('setHeader', [$key, $value]);
+            }
+        }
+        $headersHandlerId = $definitionId.'.headers_handler';
+        $container->setDefinition($headersHandlerId, $headersHandler);
+
+        // Event handler
+        $eventHandler   = (new Definition('M6Web\Bundle\ElasticsearchBundle\Handler\EventHandler'))
+            ->setPublic(false)
+            ->setArguments([new Reference('event_dispatcher'), new Reference($headersHandlerId)]);
+        $eventHandlerId = $definitionId.'.event_handler';
+        $container->setDefinition($eventHandlerId, $eventHandler);
+
+        return $eventHandlerId;
+    }
 
     /**
      * @return string
@@ -82,26 +118,4 @@ class M6WebElasticsearchExtension extends Extension
     {
         return 'm6web_elasticsearch';
     }
-
-
-    /**
-     * Convert the service names in the $config array to References
-     *
-     * @param array $config
-     *
-     * @return array
-     */
-    protected function convertServiceNamesToReferences($config)
-    {
-        // We allow a service name to be set in the `logObject` and `traceObject` configuration
-        if (isset($config['logObject']) && is_string($config['logObject'])) {
-            $config['logObject'] = new Reference($config['logObject']);
-        }
-        if (isset($config['traceObject']) && is_string($config['traceObject'])) {
-            $config['traceObject'] = new Reference($config['traceObject']);
-        }
-
-        return $config;
-    }
-
 }

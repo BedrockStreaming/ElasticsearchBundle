@@ -66,28 +66,11 @@ m6web_elasticsearch:
     clients:
         my_client:
             hosts:
-                - 'localhost:9200'
-            connectionPoolClass: '\Elasticsearch\ConnectionPool\StaticNoPingConnectionPool'
-            logging: true
-            logLevel: warning
-            connectionParams: 
-                auth:
-                    - username
-                    - password
-                    - Basic
+                - 'https://username:password@localhost:9200'
+            headers:
+                'Accept-Encoding': ['gzip']
 ```
 
-For the `logObject` and `traceObject` parameters, you must specify a service name. Example for using the `my_logger` service:
-``` yml
-m6web_elasticsearch:
-    clients:
-        my_logged_client:
-            hosts:
-                - 'localhost:9200'
-            logging: true
-            logObject: my_logger
-            logLevel: warning
-```
 
 ### Events
 
@@ -102,11 +85,6 @@ You can launch the unit tests using:
 ```
 ./vendor/bin/atoum
 ```
-
-## Roadmap
-
-- Dispatch some events to the Symfony2 eventDispatcher
-- Integrate debugging/profiling informations to the Symfony2 Web Debug Toolbar
 
 ## License
 
