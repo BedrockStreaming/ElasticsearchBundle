@@ -42,6 +42,14 @@ class M6WebElasticsearchExtension extends Extension
     }
 
     /**
+     * @return string
+     */
+    public function getAlias()
+    {
+        return 'm6web_elasticsearch';
+    }
+
+    /**
      * Add a new Elasticsearch client definition in the container
      *
      * @param ContainerBuilder $container
@@ -59,8 +67,12 @@ class M6WebElasticsearchExtension extends Extension
             'handler' => new Reference($handlerId),
         ];
 
-        if ($container->getParameter('kernel.debug')) {
-            $builderConfig['logger'] = new Reference('m6web_elasticsearch.logger');
+        if (isset($config['retries'])) {
+            $builderConfig['retries'] = $config['retries'];
+        }
+
+        if (isset($config['logger'])) {
+            $builderConfig['logger'] = new Reference($config['logger']);
         }
 
         $definition = (new Definition('Elasticsearch\Client'))
@@ -68,6 +80,10 @@ class M6WebElasticsearchExtension extends Extension
             ->setFactoryMethod('fromConfig')
             ->setArguments([$builderConfig]);
         $container->setDefinition($definitionId, $definition);
+
+        if ($container->getParameter('kernel.debug')) {
+            $this->createDataCollector($container);
+        }
     }
 
     /**
@@ -112,10 +128,29 @@ class M6WebElasticsearchExtension extends Extension
     }
 
     /**
-     * @return string
+     * @param ContainerBuilder $container
      */
-    public function getAlias()
+    protected function createDataCollector(ContainerBuilder $container)
     {
-        return 'm6web_elasticsearch';
+        $collectorDefinition = new Definition(
+            'M6Web\Bundle\ElasticsearchBundle\DataCollector\ElasticsearchDataCollector'
+        );
+        $collectorDefinition->addTag(
+            'data_collector',
+            [
+                'template' => 'M6WebElasticsearchBundle:Collector:elasticsearch',
+                'id'       => 'elasticsearch'
+            ]
+        );
+
+        $collectorDefinition->addTag(
+            'kernel.event_listener',
+            [
+                'event' => 'm6web.elasticsearch',
+                'method' => 'handleEvent'
+            ]
+        );
+
+        $container->setDefinition('m6web_elasticsearch.data_collector', $collectorDefinition);
     }
 }

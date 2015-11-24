@@ -69,6 +69,8 @@ m6web_elasticsearch:
                 - 'https://username:password@localhost:9200'
             headers:
                 'Accept-Encoding': ['gzip']
+            retries: 2
+            logger: monolog.logger.custom
 ```
 
 

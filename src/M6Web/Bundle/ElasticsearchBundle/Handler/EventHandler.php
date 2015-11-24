@@ -62,6 +62,16 @@ class EventHandler
                 ->setDuration($response['transfer_stats']['total_time'])
                 ->setTook($getTook($response));
 
+            if (isset($request['body'])) {
+                $event->setBody($request['body']);
+            }
+            if (isset($request['headers'])) {
+                $event->setHeaders($request['headers']);
+            }
+            if (isset($response['error'])) {
+                $event->setError($response['error']->getMessage());
+            }
+
             $this->eventDispatcher->dispatch('m6web.elasticsearch', $event);
 
             return $response;
@@ -79,6 +89,9 @@ class EventHandler
      */
     protected function extractTookFromResponse(array $response)
     {
+        if (is_null($response['body'])) {
+            return null;
+        }
         $content = stream_get_contents($response['body']);
         rewind($response['body']);
 

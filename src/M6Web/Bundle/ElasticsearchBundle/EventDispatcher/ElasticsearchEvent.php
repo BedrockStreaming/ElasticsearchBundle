@@ -40,6 +40,23 @@ class ElasticsearchEvent extends Event
     private $took;
 
     /**
+     * @var array
+     */
+    private $headers;
+
+    /**
+     * Body of the ES request
+     *
+     * @var string
+     */
+    private $body;
+
+    /**
+     * @var string
+     */
+    private $error;
+
+    /**
      * @return float
      */
     public function getDuration()
@@ -139,6 +156,66 @@ class ElasticsearchEvent extends Event
     public function setTook($took)
     {
         $this->took = $took;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getHeaders()
+    {
+        return $this->headers;
+    }
+
+    /**
+     * @param array $headers
+     *
+     * @return $this
+     */
+    public function setHeaders($headers)
+    {
+        $this->headers = $headers;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBody()
+    {
+        return $this->body;
+    }
+
+    /**
+     * @param string $body
+     *
+     * @return $this
+     */
+    public function setBody($body)
+    {
+        $this->body = $body;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getError()
+    {
+        return $this->error;
+    }
+
+    /**
+     * @param string $error
+     *
+     * @return $this
+     */
+    public function setError($error)
+    {
+        $this->error = $error;
 
         return $this;
     }

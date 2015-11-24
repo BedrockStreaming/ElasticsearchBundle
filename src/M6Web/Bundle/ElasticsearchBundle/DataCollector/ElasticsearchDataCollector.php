@@ -2,7 +2,7 @@
 
 namespace M6Web\Bundle\ElasticsearchBundle\DataCollector;
 
-use M6Web\Bundle\ElasticsearchBundle\Logger\ElasticsearchLogger;
+use M6Web\Bundle\ElasticsearchBundle\EventDispatcher\ElasticsearchEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
@@ -13,20 +13,34 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 class ElasticsearchDataCollector extends DataCollector
 {
     /**
-     * Logger
-     *
-     * @var ElasticsearchLogger
+     * ElasticsearchDataCollector constructor.
      */
-    private $logger;
+    public function __construct()
+    {
+        $this->data = [
+            'queries'              => [],
+            'total_execution_time' => 0,
+        ];
+    }
+
 
     /**
-     * Constructor
-     *
-     * @param ElasticsearchLogger $logger
+     * @param ElasticsearchEvent $event
      */
-    public function __construct(ElasticsearchLogger $logger)
+    public function handleEvent(ElasticsearchEvent $event)
     {
-        $this->logger = $logger;
+        $query = array(
+            'method'      => $event->getMethod(),
+            'uri'         => $event->getUri(),
+            'headers'     => $this->varToString($event->getHeaders()),
+            'status_code' => $event->getStatusCode(),
+            'duration'    => $event->getDuration(),
+            'took'        => $event->getTook(),
+            'body'        => json_decode($event->getBody()),
+            'error'       => $event->getError(),
+        );
+        $this->data['queries'][] = $query;
+        $this->data['total_execution_time'] += $query['duration'];
     }
 
     /**
@@ -34,12 +48,14 @@ class ElasticsearchDataCollector extends DataCollector
      */
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
-        $this->data['queries'] = $this->logger->getQueries();
+    }
 
-        $this->data['total_execution_time'] = 0;
-        foreach ($this->data['queries'] as $query) {
-            $this->data['total_execution_time'] += $query['duration'];
-        }
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'elasticsearch';
     }
 
     /**
@@ -62,11 +78,4 @@ class ElasticsearchDataCollector extends DataCollector
         return $this->data['total_execution_time'];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'elasticsearch';
-    }
 }

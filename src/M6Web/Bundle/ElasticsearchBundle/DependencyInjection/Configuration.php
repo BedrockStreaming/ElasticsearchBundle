@@ -34,6 +34,7 @@ class Configuration implements ConfigurationInterface
                             ->prototype('scalar')->end()
                         ->end()
                         ->integerNode('retries')->end()
+                        ->scalarNode('logger')->end()
                         ->variableNode('headers')->end()
                     ->end()
                 ->end()
