@@ -38,11 +38,19 @@
     <h2>Queries</h2>
     <ul class="alt">
         {% for key, query in collector.queries %}
-            <li class="{{ cycle(['odd', 'even'], loop.index) }}{% if query.error is defined %} error{% endif %}">
+            <li class="{{ cycle(['odd', 'even'], loop.index) }}{% if query.error %} error{% endif %}">
                 <strong>Path</strong>: {{ query.uri }}<br/>
                 <strong>Method</strong>: {{ query.method }}<br/>
+                <strong>Headers</strong>: {{ query.headers }}<br/>
                 <strong>Status code</strong>: {{ query.status_code }}<br/>
-                {% if query.data is defined %}
+                <small>
+                    <strong>Query time</strong>: {{ '%0.2f'|format(query.duration * 1000) }} ms<br/>
+                    <strong>ES Took time</strong>: {{ '%0.2f'|format(query.took) }} ms<br/>
+                </small>
+                {% if query.error %}
+                    <strong>Error</strong>: {{ query.error }}<br/>
+                {% endif %}
+                {% if query.body %}
                     <div onclick="return expand(this);" title="Data" data-target-id="elasticsearch-data-{{ key }}"
                          style="cursor: pointer">
                         <img alt="+" src="{{ asset('bundles/framework/images/blue_picto_more.gif') }}"
@@ -53,13 +61,10 @@
                     </div>
                     <div style="display: none;" id="elasticsearch-data-{{ key }}">
                         <code>
-                            <pre style="background-color: white">{{ query.data|json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
+                            <pre style="background-color: white">{{ query.body|json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
                         </code>
                     </div>
                 {% endif %}
-                <small>
-                    <strong>Time</strong>: {{ '%0.2f'|format(query.duration * 1000) }} ms
-                </small>
                 <br/>
                 {% if query.curl is defined %}
                     <div onclick="return expand(this);" title="cURL query" data-target-id="elasticsearch-curl-{{ key }}" style="cursor: pointer">

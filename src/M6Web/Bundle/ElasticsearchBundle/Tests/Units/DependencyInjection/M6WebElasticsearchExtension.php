@@ -79,7 +79,7 @@ class M6WebElasticsearchExtension extends test
         $parameterBag = new ParameterBag(array('kernel.debug' => true));
 
         $container = new \Symfony\Component\DependencyInjection\ContainerBuilder($parameterBag);
-        $container->set('event_dispatcher', new \StdClass());
+        $container->set('event_dispatcher', new \mock\Symfony\Component\EventDispatcher\EventDispatcherInterface());
 
         $this->if($extension = new TestedClass())
         ->when($extension->load($configs, $container))
@@ -111,7 +111,7 @@ class M6WebElasticsearchExtension extends test
         $parameterBag = new ParameterBag(array('kernel.debug' => true));
 
         $container = new \Symfony\Component\DependencyInjection\ContainerBuilder($parameterBag);
-        $container->set('event_dispatcher', new \StdClass());
+        $container->set('event_dispatcher', new \mock\Symfony\Component\EventDispatcher\EventDispatcherInterface());
 
         $this->if($extension = new TestedClass())
         ->when($extension->load($configs, $container))
@@ -146,7 +146,7 @@ class M6WebElasticsearchExtension extends test
         $parameterBag = new ParameterBag(array('kernel.debug' => true));
 
         $container = new \Symfony\Component\DependencyInjection\ContainerBuilder($parameterBag);
-        $container->set('event_dispatcher', new \StdClass());
+        $container->set('event_dispatcher', new \mock\Symfony\Component\EventDispatcher\EventDispatcherInterface());
 
         $this->if($extension = new TestedClass())
         ->when($extension->load($configs, $container))
@@ -154,36 +154,6 @@ class M6WebElasticsearchExtension extends test
             ->isTrue()
         ->and()
         ->clientIsCorrectlyInstanciated($container, 'default');
-
-    }
-
-    /**
-     * Test the definition of a client with a logObject that reference a service
-     */
-    public function testDefineElasticsearchClientWithLogObject()
-    {
-        $configs = [[
-            'clients' => [
-                'logged_client' => [
-                    'hosts' => [
-                        'localhost:9200',
-                    ],
-                    'logObject' => 'logger'
-                ]
-            ],
-        ]];
-
-        $parameterBag = new ParameterBag(array('kernel.debug' => true));
-
-        $container = new \Symfony\Component\DependencyInjection\ContainerBuilder($parameterBag);
-        $container->set('logger', new \StdClass());
-        $container->set('event_dispatcher', new \StdClass());
-
-        $this->if($extension = new TestedClass())
-        ->when($extension->load($configs, $container))
-        ->then($argument = $container->getDefinition('m6web_elasticsearch.client.logged_client')->getArgument(0))
-        ->object($argument['logObject'])
-            ->isInstanceOf('\Symfony\Component\DependencyInjection\Reference');
 
     }
 
