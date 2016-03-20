@@ -76,9 +76,9 @@ class M6WebElasticsearchExtension extends Extension
         }
 
         $definition = (new Definition('Elasticsearch\Client'))
-            ->setFactoryClass('Elasticsearch\ClientBuilder')
-            ->setFactoryMethod('fromConfig')
             ->setArguments([$builderConfig]);
+        $this->setFactoryToDefinition('Elasticsearch\ClientBuilder', 'fromConfig', $definition);
+
         $container->setDefinition($definitionId, $definition);
 
         if ($container->getParameter('kernel.debug')) {
@@ -99,9 +99,10 @@ class M6WebElasticsearchExtension extends Extension
     {
         // cURL handler
         $singleHandler   = (new Definition('GuzzleHttp\Ring\Client\CurlHandler'))
-            ->setPublic(false)
-            ->setFactoryClass('Elasticsearch\ClientBuilder')
-            ->setFactoryMethod('defaultHandler');
+            ->setPublic(false);
+
+        $this->setFactoryToDefinition('Elasticsearch\ClientBuilder', 'defaultHandler', $singleHandler);
+
         $singleHandlerId = $definitionId.'.single_handler';
         $container->setDefinition($singleHandlerId, $singleHandler);
 
@@ -126,6 +127,24 @@ class M6WebElasticsearchExtension extends Extension
 
         return $eventHandlerId;
     }
+
+    /**
+     * @param string     $classname
+     * @param string     $method
+     * @param Definition $definition
+     */
+    private function setFactoryToDefinition($classname, $method, Definition $definition)
+    {
+        // Symfony 2.3 backward compatibility
+        if (method_exists('Symfony\Component\DependencyInjection\Definition', 'setFactory')) {
+            $definition->setFactory([$classname, $method]);
+        } else {
+            $definition
+                ->setFactoryClass($classname)
+                ->setFactoryMethod($method);
+        }
+    }
+
 
     /**
      * @param ContainerBuilder $container
