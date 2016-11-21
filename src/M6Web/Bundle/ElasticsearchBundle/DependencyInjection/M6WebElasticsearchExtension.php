@@ -62,21 +62,29 @@ class M6WebElasticsearchExtension extends Extension
 
         $handlerId = $this->createHandler($container, $config, $definitionId);
 
-        $builderConfig = [
+        $clientConfig = [
             'hosts'   => $config['hosts'],
             'handler' => new Reference($handlerId),
         ];
 
         if (isset($config['retries'])) {
-            $builderConfig['retries'] = $config['retries'];
+            $clientConfig['retries'] = $config['retries'];
         }
 
         if (isset($config['logger'])) {
-            $builderConfig['logger'] = new Reference($config['logger']);
+            $clientConfig['logger'] = new Reference($config['logger']);
+        }
+
+        if (!empty($config['connectionPoolClass'])) {
+            $clientConfig['connectionPool'] = $config['connectionPoolClass'];
+        }
+
+        if (!empty($config['selectorClass'])) {
+            $clientConfig['selector'] = $config['selectorClass'];
         }
 
         $definition = (new Definition('Elasticsearch\Client'))
-            ->setArguments([$builderConfig]);
+            ->setArguments([$clientConfig]);
         $this->setFactoryToDefinition('Elasticsearch\ClientBuilder', 'fromConfig', $definition);
 
         $container->setDefinition($definitionId, $definition);
@@ -129,22 +137,21 @@ class M6WebElasticsearchExtension extends Extension
     }
 
     /**
-     * @param string     $classname
+     * @param string     $className
      * @param string     $method
      * @param Definition $definition
      */
-    private function setFactoryToDefinition($classname, $method, Definition $definition)
+    private function setFactoryToDefinition($className, $method, Definition $definition)
     {
         // Symfony 2.3 backward compatibility
         if (method_exists('Symfony\Component\DependencyInjection\Definition', 'setFactory')) {
-            $definition->setFactory([$classname, $method]);
+            $definition->setFactory([$className, $method]);
         } else {
             $definition
-                ->setFactoryClass($classname)
+                ->setFactoryClass($className)
                 ->setFactoryMethod($method);
         }
     }
-
 
     /**
      * @param ContainerBuilder $container
