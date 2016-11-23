@@ -33,6 +33,8 @@ class Configuration implements ConfigurationInterface
                             ->performNoDeepMerging()
                             ->prototype('scalar')->end()
                         ->end()
+                        ->scalarNode('connectionPoolClass')->end()
+                        ->scalarNode('selectorClass')->end()
                         ->integerNode('retries')->end()
                         ->scalarNode('logger')->end()
                         ->variableNode('headers')->end()
