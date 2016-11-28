@@ -83,7 +83,7 @@ class M6WebElasticsearchExtension extends Extension
             $clientConfig['selector'] = $config['selectorClass'];
         }
 
-        $definition = (new Definition('Elasticsearch\Client'))
+        $definition = (new Definition($config['client_class']))
             ->setArguments([$clientConfig]);
         $this->setFactoryToDefinition('Elasticsearch\ClientBuilder', 'fromConfig', $definition);
 

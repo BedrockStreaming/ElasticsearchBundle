@@ -33,6 +33,7 @@ class Configuration implements ConfigurationInterface
                             ->performNoDeepMerging()
                             ->prototype('scalar')->end()
                         ->end()
+                        ->scalarNode('client_class')->defaultValue('Elasticsearch\Client')->end()
                         ->scalarNode('connectionPoolClass')->end()
                         ->scalarNode('selectorClass')->end()
                         ->integerNode('retries')->end()
