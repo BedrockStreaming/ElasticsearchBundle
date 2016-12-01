@@ -59,7 +59,7 @@ It will also create `m6web_elasticsearch.client.default` which is an alias for `
 
 ### Additional configuration
 
-Each client can have additional configuration parameters that will be used to instanciate the `\Elasticsearch\Client`. Ex:
+Each client can have additional configuration parameters that will be used to instantiate the `\Elasticsearch\Client`. Ex:
 
 ``` yml
 m6web_elasticsearch:
@@ -71,12 +71,18 @@ m6web_elasticsearch:
                 'Accept-Encoding': ['gzip']
             retries: 2
             logger: monolog.logger.custom
+            connectionPoolClass: '\Elasticsearch\ConnectionPool\StaticConnectionPool'
+            selectorClass: '\Elasticsearch\ConnectionPool\Selectors\RandomSelector'
+            connectionParams:
+                client:
+                    timeout: 3
+                    connect_timeout: 1
 ```
 
 
 ### Events
 
-The bundle dispatches `\M6Web\Bundle\ElasticsearchBundle\EventDispatcher\ElasticsearchEvent` events containing various informations about the Elasticsearch requests. 
+The bundle dispatches `\M6Web\Bundle\ElasticsearchBundle\EventDispatcher\ElasticsearchEvent` events containing various information about the Elasticsearch requests. 
 
 Events are fired with the name `m6web.elasticsearch`. 
 
