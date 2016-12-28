@@ -11,7 +11,7 @@
     ],
     "require": {
         "php": ">=5.5",
-        "elasticsearch/elasticsearch": "^5.0"
+        "elasticsearch/elasticsearch": "5.0.x-dev"
     },
     "require-dev": {
         "atoum/atoum":                      "^2.6",
