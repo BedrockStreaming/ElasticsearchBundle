@@ -10,8 +10,8 @@
         }
     ],
     "require": {
-        "php": ">=5.5",
-        "elasticsearch/elasticsearch": "^2.3"
+        "php": ">=7.0",
+        "elasticsearch/elasticsearch": "^5.1.0"
     },
     "require-dev": {
         "atoum/atoum":                      "^2.6",
