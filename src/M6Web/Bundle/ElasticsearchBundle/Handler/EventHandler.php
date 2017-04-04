@@ -59,7 +59,7 @@ class EventHandler
                 ->setUri($request['uri'])
                 ->setMethod($request['http_method'])
                 ->setStatusCode($response['status'])
-                ->setDuration($response['transfer_stats']['total_time'])
+                ->setDuration($response['transfer_stats']['total_time'] * 1000)
                 ->setTook($getTook($response));
 
             if (isset($request['body'])) {
