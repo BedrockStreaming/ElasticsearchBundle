@@ -65,7 +65,7 @@ class EventHandler extends atoum
             [
                 'request'       => ['uri' => '/_search', 'http_method' => 'GET'],
                 'response'      => [
-                    'transfer_stats' => ['total_time' => 500],
+                    'transfer_stats' => ['total_time' => 0.5],
                     'status'         => 200,
                     'body'           => fopen('data://text/plain,', 'r'),
                 ],
@@ -79,7 +79,7 @@ class EventHandler extends atoum
             [
                 'request'       => ['uri' => '/_count', 'http_method' => 'POST'],
                 'response'      => [
-                    'transfer_stats' => ['total_time' => 1000],
+                    'transfer_stats' => ['total_time' => 1],
                     'status'         => 500,
                     'body'           => fopen('data://text/plain,'.json_encode(['took' => 10]), 'r'),
                 ],
