@@ -9,9 +9,15 @@
             "email": "matthieu.guillermin@m6.fr"
         }
     ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/M6Web/elasticsearch-php"
+        }
+    ],
     "require": {
         "php": ">=7.0",
-        "elasticsearch/elasticsearch": "^5.1.0"
+        "elasticsearch/elasticsearch": "^2.3.0"
     },
     "require-dev": {
         "atoum/atoum":                      "^2.8|^3.0",
