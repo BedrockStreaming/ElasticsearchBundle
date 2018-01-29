@@ -17,10 +17,7 @@ class ElasticsearchDataCollector extends DataCollector
      */
     public function __construct()
     {
-        $this->data = [
-            'queries'              => [],
-            'total_execution_time' => 0,
-        ];
+        $this->reset();
     }
 
 
@@ -78,4 +75,13 @@ class ElasticsearchDataCollector extends DataCollector
         return $this->data['total_execution_time'];
     }
 
+    /**
+     * Resets this data collector to its initial state.
+     */
+    public function reset() {
+        $this->data = [
+            'queries'              => [],
+            'total_execution_time' => 0,
+        ];
+    }
 }
