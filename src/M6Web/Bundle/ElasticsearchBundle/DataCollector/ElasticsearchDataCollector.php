@@ -29,7 +29,7 @@ class ElasticsearchDataCollector extends DataCollector
         $query = array(
             'method'      => $event->getMethod(),
             'uri'         => $event->getUri(),
-            'headers'     => $this->varToString($event->getHeaders()),
+            'headers'     => $this->cloneVar($event->getHeaders()),
             'status_code' => $event->getStatusCode(),
             'duration'    => $event->getDuration(),
             'took'        => $event->getTook(),
