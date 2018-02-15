@@ -29,7 +29,7 @@ class ElasticsearchDataCollector extends DataCollector
         $query = array(
             'method'      => $event->getMethod(),
             'uri'         => $event->getUri(),
-            'headers'     => $this->varToString($event->getHeaders()),
+            'headers'     => $this->stringifyVariable($event->getHeaders()),
             'status_code' => $event->getStatusCode(),
             'duration'    => $event->getDuration(),
             'took'        => $event->getTook(),
@@ -78,10 +78,31 @@ class ElasticsearchDataCollector extends DataCollector
     /**
      * Resets this data collector to its initial state.
      */
-    public function reset() {
+    public function reset()
+    {
         $this->data = [
             'queries'              => [],
             'total_execution_time' => 0,
         ];
+    }
+
+    /**
+     * Converts a PHP variable to a string or
+     * Converts the variable into a serializable Data instance.
+     *
+     * The convert action depend on method available in the sf DataCollector class.
+     * In sf >= 4, the DataCollector::varToString() doesn't exists anymore
+     *
+     * @param mixed $var
+     *
+     * @return mixed
+     */
+    protected function stringifyVariable($var)
+    {
+        if (method_exists($this, 'varToString')) {
+            return $this->varToString($var);
+        } else {
+            return $this->cloneVar($var);
+        }
     }
 }
