@@ -147,14 +147,8 @@ class M6WebElasticsearchExtension extends Extension
      */
     private function setFactoryToDefinition($className, $method, Definition $definition)
     {
-        // Symfony 2.3 backward compatibility
-        if (method_exists('Symfony\Component\DependencyInjection\Definition', 'setFactory')) {
-            $definition->setFactory([$className, $method]);
-        } else {
-            $definition
-                ->setFactoryClass($className)
-                ->setFactoryMethod($method);
-        }
+        $definition
+            ->setFactory([$className, $method]);
     }
 
     /**
