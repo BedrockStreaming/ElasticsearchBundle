@@ -162,7 +162,7 @@ class M6WebElasticsearchExtension extends Extension
         $collectorDefinition->addTag(
             'data_collector',
             [
-                'template' => 'M6WebElasticsearchBundle:Collector:elasticsearch',
+                'template' => '@M6WebElasticsearch/Collector/elasticsearch.html.twig',
                 'id'       => 'elasticsearch'
             ]
         );
