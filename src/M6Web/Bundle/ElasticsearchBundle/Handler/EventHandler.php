@@ -72,7 +72,7 @@ class EventHandler
                 $event->setError($response['error']->getMessage());
             }
 
-            $this->eventDispatcher->dispatch('m6web.elasticsearch', $event);
+            $this->eventDispatcher->dispatch($event, 'm6web.elasticsearch');
 
             return $response;
         };

@@ -1,4 +1,4 @@
-{% extends 'WebProfilerBundle:Profiler:layout.html.twig' %}
+{% extends '@WebProfiler/Profiler/layout.html.twig' %}
 
 {% block toolbar %}
     {% set icon %}
@@ -18,7 +18,7 @@
         <span>{{ '%0.2f'|format(collector.totalExecutionTime * 1000) }} ms</span>
     </div>
     {% endset %}
-    {% include 'WebProfilerBundle:Profiler:toolbar_item.html.twig' with {'link': profiler_url} %}
+    {% include '@WebProfiler/Profiler/toolbar_item.html.twig' with {'link': profiler_url} %}
 {% endblock %}
 
 {% block menu %}

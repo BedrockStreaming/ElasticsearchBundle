@@ -147,14 +147,8 @@ class M6WebElasticsearchExtension extends Extension
      */
     private function setFactoryToDefinition($className, $method, Definition $definition)
     {
-        // Symfony 2.3 backward compatibility
-        if (method_exists('Symfony\Component\DependencyInjection\Definition', 'setFactory')) {
-            $definition->setFactory([$className, $method]);
-        } else {
-            $definition
-                ->setFactoryClass($className)
-                ->setFactoryMethod($method);
-        }
+        $definition
+            ->setFactory([$className, $method]);
     }
 
     /**
@@ -168,7 +162,7 @@ class M6WebElasticsearchExtension extends Extension
         $collectorDefinition->addTag(
             'data_collector',
             [
-                'template' => 'M6WebElasticsearchBundle:Collector:elasticsearch',
+                'template' => '@M6WebElasticsearch/Collector/elasticsearch.html.twig',
                 'id'       => 'elasticsearch'
             ]
         );
