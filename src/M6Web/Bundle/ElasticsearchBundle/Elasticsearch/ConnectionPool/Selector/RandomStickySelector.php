@@ -24,7 +24,7 @@ class RandomStickySelector implements SelectorInterface
      *
      * @return ConnectionInterface
      */
-    public function select($connections)
+    public function select($connections): ConnectionInterface
     {
         if (empty($connections)) {
             throw new NoNodesAvailableException('No node to select from…');
