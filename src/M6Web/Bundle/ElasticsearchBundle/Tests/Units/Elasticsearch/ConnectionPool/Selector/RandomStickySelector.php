@@ -5,7 +5,7 @@ namespace M6Web\Bundle\ElasticsearchBundle\Tests\Units\Elasticsearch\ConnectionP
 use Elasticsearch\Common\Exceptions\NoNodesAvailableException;
 use Elasticsearch\Connections\Connection;
 use M6Web\Bundle\ElasticsearchBundle\Tests\Units\Elasticsearch\ConnectionMocker;
-use mageekguy\atoum\test;
+use atoum\atoum\test;
 
 /**
  * Class RandomStickySelector

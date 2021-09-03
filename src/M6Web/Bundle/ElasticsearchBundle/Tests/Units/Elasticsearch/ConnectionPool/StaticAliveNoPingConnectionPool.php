@@ -7,7 +7,7 @@ use Elasticsearch\ConnectionPool\Selectors\SelectorInterface;
 use Elasticsearch\Connections\Connection;
 use Elasticsearch\Connections\ConnectionFactoryInterface;
 use M6Web\Bundle\ElasticsearchBundle\Tests\Units\Elasticsearch\ConnectionMocker;
-use mageekguy\atoum\test;
+use atoum\atoum\test;
 
 /**
  * Class StaticAliveNoPingConnectionPool

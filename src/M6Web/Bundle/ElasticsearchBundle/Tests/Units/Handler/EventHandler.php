@@ -6,7 +6,7 @@ use GuzzleHttp\Ring\Future\CompletedFutureArray;
 use GuzzleHttp\Ring\Future\FutureArray;
 use M6Web\Bundle\ElasticsearchBundle\EventDispatcher\ElasticsearchEvent;
 use M6Web\Bundle\ElasticsearchBundle\Handler\EventHandler as TestedClass;
-use mageekguy\atoum;
+use atoum\atoum;
 use React\Promise\RejectedPromise;
 
 /**

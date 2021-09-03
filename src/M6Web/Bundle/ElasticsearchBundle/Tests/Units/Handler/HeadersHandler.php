@@ -3,7 +3,7 @@
 namespace M6Web\Bundle\ElasticsearchBundle\Tests\Units\Handler;
 
 use M6Web\Bundle\ElasticsearchBundle\Handler\HeadersHandler as TestedClass;
-use mageekguy\atoum;
+use atoum\atoum;
 
 /**
  * HeadersHandler
