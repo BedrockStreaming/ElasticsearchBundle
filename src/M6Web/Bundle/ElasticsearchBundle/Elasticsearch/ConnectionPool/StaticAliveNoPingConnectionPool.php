@@ -5,6 +5,7 @@ namespace M6Web\Bundle\ElasticsearchBundle\Elasticsearch\ConnectionPool;
 use Elasticsearch\Common\Exceptions\NoNodesAvailableException;
 use Elasticsearch\ConnectionPool\StaticNoPingConnectionPool;
 use Elasticsearch\Connections\Connection;
+use Elasticsearch\Connections\ConnectionInterface;
 
 /**
  * Class StaticAliveNoPingConnectionPool
@@ -52,7 +53,7 @@ class StaticAliveNoPingConnectionPool extends StaticNoPingConnectionPool
      * @return Connection
      * @throws \Elasticsearch\Common\Exceptions\NoNodesAvailableException
      */
-    public function nextConnection($force = false)
+    public function nextConnection($force = false): ConnectionInterface
     {
         // > Replace $this->connections by $connections in order to modify the list later.
         $connections = $this->connections;
