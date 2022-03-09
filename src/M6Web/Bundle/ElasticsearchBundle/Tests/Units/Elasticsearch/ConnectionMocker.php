@@ -6,8 +6,6 @@ use Elasticsearch\Connections\Connection;
 
 /**
  * Class ConnectionMocker
- *
- * @package M6Web\Bundle\ElasticsearchBundle\Tests\Units\Elasticsearch
  */
 trait ConnectionMocker
 {
@@ -22,8 +20,6 @@ trait ConnectionMocker
     }
 
     /**
-     * @param array $callbacks
-     *
      * @return Connection
      */
     protected function getConnectionMock(array $callbacks = [])
@@ -31,7 +27,7 @@ trait ConnectionMocker
         $this->mockGenerator->orphanize('__construct');
         $this->mockGenerator->shuntParentClassCalls();
 
-        $connectionMock = new \mock\Elasticsearch\Connections\Connection;
+        $connectionMock = new \mock\Elasticsearch\Connections\Connection();
 
         foreach ($callbacks as $method => $callback) {
             $this->calling($connectionMock)->$method = $callback;

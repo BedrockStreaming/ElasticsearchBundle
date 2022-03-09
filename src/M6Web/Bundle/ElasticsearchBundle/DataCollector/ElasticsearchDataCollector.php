@@ -20,22 +20,18 @@ class ElasticsearchDataCollector extends DataCollector
         $this->reset();
     }
 
-
-    /**
-     * @param ElasticsearchEvent $event
-     */
     public function handleEvent(ElasticsearchEvent $event)
     {
-        $query = array(
-            'method'      => $event->getMethod(),
-            'uri'         => $event->getUri(),
-            'headers'     => $this->stringifyVariable($event->getHeaders()),
+        $query = [
+            'method' => $event->getMethod(),
+            'uri' => $event->getUri(),
+            'headers' => $this->stringifyVariable($event->getHeaders()),
             'status_code' => $event->getStatusCode(),
-            'duration'    => $event->getDuration(),
-            'took'        => $event->getTook(),
-            'body'        => json_decode($event->getBody()),
-            'error'       => $event->getError(),
-        );
+            'duration' => $event->getDuration(),
+            'took' => $event->getTook(),
+            'body' => json_decode($event->getBody()),
+            'error' => $event->getError(),
+        ];
         $this->data['queries'][] = $query;
         $this->data['total_execution_time'] += $query['duration'];
     }
@@ -81,7 +77,7 @@ class ElasticsearchDataCollector extends DataCollector
     public function reset()
     {
         $this->data = [
-            'queries'              => [],
+            'queries' => [],
             'total_execution_time' => 0,
         ];
     }

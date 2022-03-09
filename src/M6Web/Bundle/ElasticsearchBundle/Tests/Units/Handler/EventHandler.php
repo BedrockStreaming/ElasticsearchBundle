@@ -2,11 +2,11 @@
 
 namespace M6Web\Bundle\ElasticsearchBundle\Tests\Units\Handler;
 
+use atoum\atoum;
 use GuzzleHttp\Ring\Future\CompletedFutureArray;
 use GuzzleHttp\Ring\Future\FutureArray;
 use M6Web\Bundle\ElasticsearchBundle\EventDispatcher\ElasticsearchEvent;
 use M6Web\Bundle\ElasticsearchBundle\Handler\EventHandler as TestedClass;
-use atoum\atoum;
 use React\Promise\RejectedPromise;
 
 /**
@@ -16,23 +16,19 @@ class EventHandler extends atoum
 {
     /**
      * Test dispatch
-     *
-     * @param array              $request
-     * @param array              $response
-     * @param ElasticsearchEvent $expectedEvent
      */
     public function testDispatch(array $request, array $response, ElasticsearchEvent $expectedEvent)
     {
         $eventDispatcher = $this->getEventDispatcher();
-        $requestHandler  = $this->getRequestHandler();
-        $future          = new CompletedFutureArray($response);
+        $requestHandler = $this->getRequestHandler();
+        $future = new CompletedFutureArray($response);
 
         $this->calling($requestHandler)->__invoke = $future;
 
         $this
             ->if($handler = new TestedClass($eventDispatcher, $requestHandler))
             ->variable($future = $handler($request))
-            ->mock($eventDispatcher)->call('dispatch')->withArguments('m6web.elasticsearch', $expectedEvent)->once();
+            ->mock($eventDispatcher)->call('dispatch')->withArguments($expectedEvent, 'm6web.elasticsearch')->once();
     }
 
     /**
@@ -40,11 +36,11 @@ class EventHandler extends atoum
      */
     public function testNoDispatch()
     {
-        $request         = [];
+        $request = [];
         $eventDispatcher = $this->getEventDispatcher();
-        $requestHandler  = $this->getRequestHandler();
-        $promise         = new RejectedPromise();
-        $future          = new FutureArray($promise);
+        $requestHandler = $this->getRequestHandler();
+        $promise = new RejectedPromise();
+        $future = new FutureArray($promise);
 
         $this->calling($requestHandler)->__invoke = $future;
 
@@ -63,11 +59,11 @@ class EventHandler extends atoum
     {
         return [
             [
-                'request'       => ['uri' => '/_search', 'http_method' => 'GET'],
-                'response'      => [
+                'request' => ['uri' => '/_search', 'http_method' => 'GET'],
+                'response' => [
                     'transfer_stats' => ['total_time' => 0.5],
-                    'status'         => 200,
-                    'body'           => fopen('data://text/plain,', 'r'),
+                    'status' => 200,
+                    'body' => fopen('data://text/plain,', 'r'),
                 ],
                 'expectedEvent' => (new ElasticsearchEvent())
                     ->setUri('/_search')
@@ -77,11 +73,11 @@ class EventHandler extends atoum
                     ->setTook(null),
             ],
             [
-                'request'       => ['uri' => '/_count', 'http_method' => 'POST'],
-                'response'      => [
+                'request' => ['uri' => '/_count', 'http_method' => 'POST'],
+                'response' => [
                     'transfer_stats' => ['total_time' => 1],
-                    'status'         => 500,
-                    'body'           => fopen('data://text/plain,'.json_encode(['took' => 10]), 'r'),
+                    'status' => 500,
+                    'body' => fopen('data://text/plain,'.json_encode(['took' => 10]), 'r'),
                 ],
                 'expectedEvent' => (new ElasticsearchEvent())
                     ->setUri('/_count')

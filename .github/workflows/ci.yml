@@ -1,0 +1,30 @@
+name: Continuous Integration
+on: [push, pull_request]
+
+jobs:
+  tests:
+    name: Tests
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        php-version: [ '7.4', '8.0', '8.1' ]
+        symfony-version: ['^4.4', '^5.0', '^5.3']
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@master
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: xdebug2
+          extensions: apcu
+          ini-values: apc.enable_cli=1
+      - name: Install symfony version from matrix
+        env:
+          SYMFONY_VERSION: ${{ matrix.symfony-version }}
+        run: composer require symfony/symfony:$SYMFONY_VERSION --no-update
+      - name: Install dependencies
+        run: composer update --prefer-dist --no-interaction
+      - name: Unit tests
+        run: |-
+          vendor/bin/php-cs-fixer fix --dry-run --using-cache=no --verbose
+          vendor/bin/atoum

@@ -2,15 +2,13 @@
 
 namespace M6Web\Bundle\ElasticsearchBundle\Tests\Units\Elasticsearch\ConnectionPool\Selector;
 
+use atoum\atoum\test;
 use Elasticsearch\Common\Exceptions\NoNodesAvailableException;
 use Elasticsearch\Connections\Connection;
 use M6Web\Bundle\ElasticsearchBundle\Tests\Units\Elasticsearch\ConnectionMocker;
-use atoum\atoum\test;
 
 /**
  * Class RandomStickySelector
- *
- * @package M6Web\Bundle\ElasticsearchBundle\Tests\Units\Elasticsearch\ConnectionPool\Selector
  */
 class RandomStickySelector extends test
 {

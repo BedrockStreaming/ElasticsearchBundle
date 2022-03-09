@@ -10,14 +10,13 @@
         }
     ],
     "require": {
-        "php": ">=7.0",
+        "php": ">=7.4",
         "ext-json": "*",
         "elasticsearch/elasticsearch": "^5.1.0||^6.0.0||^7.0"
     },
     "require-dev": {
         "atoum/atoum":                      "^4.0",
-        "m6web/coke":                       "~1.2.0",
-        "m6web/symfony2-coding-standard":   "~1.2.0",
+        "m6web/php-cs-fixer-config":        "^2.0",
         "symfony/dependency-injection":     "^4.4||^5.0",
         "symfony/event-dispatcher":         "^4.4||^5.0",
         "symfony/config":                   "^4.4||^5.0",
