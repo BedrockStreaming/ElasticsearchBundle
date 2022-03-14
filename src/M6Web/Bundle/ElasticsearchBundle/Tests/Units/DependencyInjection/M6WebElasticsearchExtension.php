@@ -2,8 +2,8 @@
 
 namespace M6Web\Bundle\ElasticsearchBundle\Tests\Units\DependencyInjection;
 
-use M6Web\Bundle\ElasticsearchBundle\DependencyInjection\M6WebElasticsearchExtension as TestedClass;
 use atoum\atoum\test;
+use M6Web\Bundle\ElasticsearchBundle\DependencyInjection\M6WebElasticsearchExtension as TestedClass;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
@@ -12,7 +12,6 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
  */
 class M6WebElasticsearchExtension extends test
 {
-
     /**
      * The loading of a configuration with no `hosts` entry should fail
      */
@@ -21,16 +20,16 @@ class M6WebElasticsearchExtension extends test
         $configs = [
             ['clients' => [
                 'no_hosts_client' => [
-                ]
-            ]]
+                ],
+            ]],
         ];
 
-        $parameterBag = new ParameterBag(array('kernel.debug' => true));
+        $parameterBag = new ParameterBag(['kernel.debug' => true]);
 
         $container = new \Symfony\Component\DependencyInjection\ContainerBuilder($parameterBag);
 
         $this->if($extension = new TestedClass())
-            ->exception(function() use($extension, $configs, $container) {
+            ->exception(function () use ($extension, $configs, $container) {
                 $extension->load($configs, $container);
             })
             ->isInstanceOf('\Symfony\Component\Config\Definition\Exception\InvalidConfigurationException');
@@ -44,17 +43,17 @@ class M6WebElasticsearchExtension extends test
         $configs = [
             ['clients' => [
                 'empty_hosts_client' => [
-                    'hosts' => []
-                ]
-            ]]
+                    'hosts' => [],
+                ],
+            ]],
         ];
 
-        $parameterBag = new ParameterBag(array('kernel.debug' => true));
+        $parameterBag = new ParameterBag(['kernel.debug' => true]);
 
         $container = new \Symfony\Component\DependencyInjection\ContainerBuilder($parameterBag);
 
         $this->if($extension = new TestedClass())
-            ->exception(function() use($extension, $configs, $container) {
+            ->exception(function () use ($extension, $configs, $container) {
                 $extension->load($configs, $container);
             })
             ->isInstanceOf('\Symfony\Component\Config\Definition\Exception\InvalidConfigurationException');
@@ -70,13 +69,13 @@ class M6WebElasticsearchExtension extends test
                 'my_only_client' => [
                     'hosts' => [
                         'localhost:9200',
-                        'localhost:9201'
-                    ]
-                ]
-            ]]
+                        'localhost:9201',
+                    ],
+                ],
+            ]],
         ];
 
-        $parameterBag = new ParameterBag(array('kernel.debug' => true));
+        $parameterBag = new ParameterBag(['kernel.debug' => true]);
 
         $container = new \Symfony\Component\DependencyInjection\ContainerBuilder($parameterBag);
         $container->set('event_dispatcher', new \mock\Symfony\Component\EventDispatcher\EventDispatcherInterface());
@@ -97,18 +96,18 @@ class M6WebElasticsearchExtension extends test
                 'my_first_client' => [
                     'hosts' => [
                         'localhost:9200',
-                        'localhost:9201'
-                    ]
+                        'localhost:9201',
+                    ],
                 ],
                 'my_second_client' => [
                     'hosts' => [
-                        'myserver:9200'
-                    ]
-                ]
-            ]]
+                        'myserver:9200',
+                    ],
+                ],
+            ]],
         ];
 
-        $parameterBag = new ParameterBag(array('kernel.debug' => true));
+        $parameterBag = new ParameterBag(['kernel.debug' => true]);
 
         $container = new \Symfony\Component\DependencyInjection\ContainerBuilder($parameterBag);
         $container->set('event_dispatcher', new \mock\Symfony\Component\EventDispatcher\EventDispatcherInterface());
@@ -119,7 +118,6 @@ class M6WebElasticsearchExtension extends test
         ->clientIsCorrectlyInstanciated($container, 'my_first_client')
         ->clientIsDefinedInContainer($container, 'my_second_client', 1)
         ->clientIsCorrectlyInstanciated($container, 'my_second_client');
-
     }
 
     /**
@@ -131,19 +129,19 @@ class M6WebElasticsearchExtension extends test
             'clients' => [
                 'my_first_client' => [
                     'hosts' => [
-                        'localhost:9200'
-                    ]
+                        'localhost:9200',
+                    ],
                 ],
                 'my_second_client' => [
                     'hosts' => [
-                        'myserver:9200'
-                    ]
-                ]
+                        'myserver:9200',
+                    ],
+                ],
             ],
-            'default_client' => 'my_second_client'
+            'default_client' => 'my_second_client',
         ]];
 
-        $parameterBag = new ParameterBag(array('kernel.debug' => true));
+        $parameterBag = new ParameterBag(['kernel.debug' => true]);
 
         $container = new \Symfony\Component\DependencyInjection\ContainerBuilder($parameterBag);
         $container->set('event_dispatcher', new \mock\Symfony\Component\EventDispatcher\EventDispatcherInterface());
@@ -154,15 +152,13 @@ class M6WebElasticsearchExtension extends test
             ->isTrue()
         ->and()
         ->clientIsCorrectlyInstanciated($container, 'default');
-
     }
 
     /**
      * Check if the client is correctly defined in the container
      *
-     * @param ContainerInterface $container
-     * @param string             $clientName
-     * @param integer            $hostsSize
+     * @param string $clientName
+     * @param int    $hostsSize
      *
      * @return M6WebElasticsearchExtension $this
      */
@@ -183,8 +179,7 @@ class M6WebElasticsearchExtension extends test
     /**
      * Check if the client is correctly instanciated
      *
-     * @param ContainerInterface $container
-     * @param string             $clientName
+     * @param string $clientName
      *
      * @return M6WebElasticsearchExtension $this
      */

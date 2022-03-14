@@ -1,4 +1,5 @@
-# ElasticsearchBundle [![Build Status](https://travis-ci.org/M6Web/ElasticsearchBundle.png?branch=master)](https://travis-ci.org/M6Web/ElasticsearchBundle)
+# ElasticsearchBundle [![Build Status](https://github.com/BedrockStreaming/ElasticsearchBundle/actions/workflows/ci.yml/badge.svg)](https://github.com/BedrockStreaming/ElasticsearchBundle/actions/workflows/ci.yml) [![Total Downloads](https://poser.pugx.org/m6web/elasticsearch-bundle/downloads.svg)](https://packagist.org/packages/m6web/elasticsearch-bundle) [![License](http://poser.pugx.org/m6web/elasticsearch-bundle/license)](https://packagist.org/packages/m6web/elasticsearch-bundle) [![PHP Version Require](http://poser.pugx.org/m6web/elasticsearch-bundle/require/php)](https://packagist.org/packages/m6web/elasticsearch-bundle)
+
 
 Integration of the [Elasticsearch official PHP client](http://github.com/elasticsearch/elasticsearch-php) within a Symfony Project.
 

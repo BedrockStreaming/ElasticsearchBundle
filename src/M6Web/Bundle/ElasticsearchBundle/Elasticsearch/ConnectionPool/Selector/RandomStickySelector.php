@@ -8,8 +8,6 @@ use Elasticsearch\Connections\ConnectionInterface;
 
 /**
  * Class RandomStickySelector
- *
- * @package M6Web\Bundle\ElasticsearchBundle\Elasticsearch\ConnectionPool\Selector
  */
 class RandomStickySelector implements SelectorInterface
 {
@@ -21,8 +19,6 @@ class RandomStickySelector implements SelectorInterface
      * @param ConnectionInterface[] $connections Array of Connection objects
      *
      * @throws NoNodesAvailableException
-     *
-     * @return ConnectionInterface
      */
     public function select($connections): ConnectionInterface
     {

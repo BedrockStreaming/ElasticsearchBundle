@@ -2,8 +2,8 @@
 
 namespace M6Web\Bundle\ElasticsearchBundle\Tests\Units\Handler;
 
-use M6Web\Bundle\ElasticsearchBundle\Handler\HeadersHandler as TestedClass;
 use atoum\atoum;
+use M6Web\Bundle\ElasticsearchBundle\Handler\HeadersHandler as TestedClass;
 
 /**
  * HeadersHandler
@@ -12,10 +12,6 @@ class HeadersHandler extends atoum
 {
     /**
      * Test calling HeadersHandler
-     *
-     * @param array $request
-     * @param array $expectedRequest
-     * @param array $headers
      */
     public function testInvoke(array $request, array $expectedRequest, array $headers)
     {
@@ -55,36 +51,36 @@ class HeadersHandler extends atoum
     {
         return [
             [
-                'request'         => ['headers' => ['host' => ['localhost:9200']]],
+                'request' => ['headers' => ['host' => ['localhost:9200']]],
                 'expectedRequest' => ['headers' => ['host' => ['localhost:9200']], 'url' => 'http://localhost:9200'],
-                'headers'         => [],
+                'headers' => [],
             ],
             [
-                'request'         => ['headers' => ['host' => ['localhost:9200']]],
+                'request' => ['headers' => ['host' => ['localhost:9200']]],
                 'expectedRequest' => ['headers' => ['host' => ['localhost:9200'], 'X-AddMe' => ['Hello']], 'url' => 'http://localhost:9200'],
-                'headers'         => ['X-AddMe' => ['Hello']],
+                'headers' => ['X-AddMe' => ['Hello']],
             ],
             [
-                'request'         => ['headers' => ['host' => ['localhost:9200']]],
+                'request' => ['headers' => ['host' => ['localhost:9200']]],
                 'expectedRequest' => ['headers' => ['host' => ['other-host.com']], 'url' => 'http://localhost:9200'],
-                'headers'         => ['host' => ['other-host.com']],
+                'headers' => ['host' => ['other-host.com']],
             ],
             [
-                'request'         => ['headers' => ['host' => ['localhost:9200']]],
+                'request' => ['headers' => ['host' => ['localhost:9200']]],
                 'expectedRequest' => [
                     'headers' => ['host' => ['localhost:9200'], 'Accept-Encoding' => ['gzip']],
-                    'client'  => ['decode_content' => true],
-                    'url' => 'http://localhost:9200'
+                    'client' => ['decode_content' => true],
+                    'url' => 'http://localhost:9200',
                 ],
-                'headers'         => ['Accept-Encoding' => ['gzip']],
+                'headers' => ['Accept-Encoding' => ['gzip']],
             ],
             [
-                'request'         => ['headers' => ['host' => ['localhost:9200']]],
+                'request' => ['headers' => ['host' => ['localhost:9200']]],
                 'expectedRequest' => [
                     'headers' => ['host' => ['localhost:9200'], 'Accept-Encoding' => ['deflate']],
-                    'url' => 'http://localhost:9200'
+                    'url' => 'http://localhost:9200',
                 ],
-                'headers'         => ['Accept-Encoding' => ['deflate']],
+                'headers' => ['Accept-Encoding' => ['deflate']],
             ],
         ];
     }

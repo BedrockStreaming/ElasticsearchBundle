@@ -27,34 +27,28 @@ class EventHandler
 
     /**
      * Constructor
-     *
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param callable                 $handler
      */
     public function __construct(EventDispatcherInterface $eventDispatcher, callable $handler)
     {
         $this->eventDispatcher = $eventDispatcher;
-        $this->handler         = $handler;
+        $this->handler = $handler;
     }
 
     /**
      * Invoke
      *
-     * @param array $request
-     *
      * @return \GuzzleHttp\Ring\Future\FutureArray
      */
     public function __invoke(array $request)
     {
-        $handler         = $this->handler;
-        $eventDispatcher = $this->eventDispatcher;
+        $handler = $this->handler;
 
         $wrapper = $this;
         $getTook = function (array $response) use ($wrapper) {
             return $wrapper->extractTookFromResponse($response);
         };
 
-        $dispatchEvent = function ($response) use ($request, $eventDispatcher, $getTook) {
+        $dispatchEvent = function ($response) use ($request, $getTook) {
             $event = (new ElasticsearchEvent())
                 ->setUri($request['uri'])
                 ->setMethod($request['http_method'])
@@ -82,8 +76,6 @@ class EventHandler
 
     /**
      * Extract took from response
-     *
-     * @param array $response
      *
      * @return int|null
      */

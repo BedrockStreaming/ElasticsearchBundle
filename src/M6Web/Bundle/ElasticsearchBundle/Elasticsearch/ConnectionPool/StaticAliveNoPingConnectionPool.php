@@ -12,19 +12,13 @@ use Elasticsearch\Connections\ConnectionInterface;
  *
  * > Extend StaticNoPingConnectionPool and add the ability to remove any failed connection
  *    from the list of eligible connections to be chosen from by the selector.
- *
- * @package M6Web\Bundle\ElasticsearchBundle\Elasticsearch\ConnectionPool
  */
 class StaticAliveNoPingConnectionPool extends StaticNoPingConnectionPool
 {
-    /**
-     * @var int
-     */
-    private $pingTimeout    = 60;
+    /** @var int */
+    private $pingTimeout = 60;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     private $maxPingTimeout = 3600;
 
     /**
@@ -51,6 +45,7 @@ class StaticAliveNoPingConnectionPool extends StaticNoPingConnectionPool
      * @param bool $force
      *
      * @return Connection
+     *
      * @throws \Elasticsearch\Common\Exceptions\NoNodesAvailableException
      */
     public function nextConnection($force = false): ConnectionInterface
@@ -78,13 +73,11 @@ class StaticAliveNoPingConnectionPool extends StaticNoPingConnectionPool
             );
         }
 
-        throw new NoNodesAvailableException("No alive nodes found in your cluster");
+        throw new NoNodesAvailableException('No alive nodes found in your cluster');
     }
 
     /**
      * > Same as parent private method.
-     *
-     * @param Connection $connection
      *
      * @return bool
      */

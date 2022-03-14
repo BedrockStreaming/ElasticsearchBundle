@@ -26,8 +26,6 @@ class HeadersHandler
 
     /**
      * Constructor
-     *
-     * @param callable $handler
      */
     public function __construct(callable $handler)
     {
@@ -51,8 +49,6 @@ class HeadersHandler
 
     /**
      * Invoke
-     *
-     * @param array $request
      *
      * @return FutureInterface
      */

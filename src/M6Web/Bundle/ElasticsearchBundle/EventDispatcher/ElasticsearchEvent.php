@@ -1,35 +1,24 @@
 <?php
 
-
 namespace M6Web\Bundle\ElasticsearchBundle\EventDispatcher;
-
 
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Class ElasticsearchEvent
- *
  */
 class ElasticsearchEvent extends Event
 {
-    /**
-     * @var float duration of the Elasticsearch request in milliseconds
-     */
+    /** @var float duration of the Elasticsearch request in milliseconds */
     private $duration;
 
-    /**
-     * @var string HTTP method
-     */
+    /** @var string HTTP method */
     private $method;
 
-    /**
-     * @var string Elasticsearch URI
-     */
+    /** @var string Elasticsearch URI */
     private $uri;
 
-    /**
-     * @var int HTTP status code
-     */
+    /** @var int HTTP status code */
     private $statusCode;
 
     /**
@@ -39,9 +28,7 @@ class ElasticsearchEvent extends Event
      */
     private $took;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     private $headers;
 
     /**
@@ -51,9 +38,7 @@ class ElasticsearchEvent extends Event
      */
     private $body;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $error;
 
     /**

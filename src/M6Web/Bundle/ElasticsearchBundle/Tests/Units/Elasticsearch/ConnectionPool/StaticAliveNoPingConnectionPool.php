@@ -2,17 +2,15 @@
 
 namespace M6Web\Bundle\ElasticsearchBundle\Tests\Units\Elasticsearch\ConnectionPool;
 
+use atoum\atoum\test;
 use Elasticsearch\Common\Exceptions\NoNodesAvailableException;
 use Elasticsearch\ConnectionPool\Selectors\SelectorInterface;
 use Elasticsearch\Connections\Connection;
 use Elasticsearch\Connections\ConnectionFactoryInterface;
 use M6Web\Bundle\ElasticsearchBundle\Tests\Units\Elasticsearch\ConnectionMocker;
-use atoum\atoum\test;
 
 /**
  * Class StaticAliveNoPingConnectionPool
- *
- * @package M6Web\Bundle\ElasticsearchBundle\Tests\Units\Elasticsearch\ConnectionPool
  */
 class StaticAliveNoPingConnectionPool extends test
 {
@@ -103,7 +101,7 @@ class StaticAliveNoPingConnectionPool extends test
         $this->mockGenerator->orphanize('__construct');
         $this->mockGenerator->shuntParentClassCalls();
 
-        $selectorMock = new \mock\Elasticsearch\ConnectionPool\Selectors\SelectorInterface;
+        $selectorMock = new \mock\Elasticsearch\ConnectionPool\Selectors\SelectorInterface();
 
         $this->calling($selectorMock)->select = function ($connections) {
             return reset($connections);
@@ -120,7 +118,7 @@ class StaticAliveNoPingConnectionPool extends test
         $this->mockGenerator->orphanize('__construct');
         $this->mockGenerator->shuntParentClassCalls();
 
-        $selectorMock = new \mock\Elasticsearch\Connections\ConnectionFactoryInterface;
+        $selectorMock = new \mock\Elasticsearch\Connections\ConnectionFactoryInterface();
 
         return $selectorMock;
     }

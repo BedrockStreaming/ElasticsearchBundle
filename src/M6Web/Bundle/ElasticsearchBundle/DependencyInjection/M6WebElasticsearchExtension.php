@@ -2,8 +2,8 @@
 
 namespace M6Web\Bundle\ElasticsearchBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader;
@@ -52,9 +52,8 @@ class M6WebElasticsearchExtension extends Extension
     /**
      * Add a new Elasticsearch client definition in the container
      *
-     * @param ContainerBuilder $container
-     * @param string           $name
-     * @param array            $config
+     * @param string $name
+     * @param array  $config
      */
     protected function createElasticsearchClient(ContainerBuilder $container, $name, $config)
     {
@@ -63,7 +62,7 @@ class M6WebElasticsearchExtension extends Extension
         $handlerId = $this->createHandler($container, $config, $definitionId);
 
         $clientConfig = [
-            'hosts'   => $config['hosts'],
+            'hosts' => $config['hosts'],
             'handler' => new Reference($handlerId),
         ];
 
@@ -101,16 +100,14 @@ class M6WebElasticsearchExtension extends Extension
     /**
      * Create request handler
      *
-     * @param ContainerBuilder $container
-     * @param array            $config
-     * @param string           $definitionId
+     * @param string $definitionId
      *
      * @return string
      */
     protected function createHandler(ContainerBuilder $container, array $config, $definitionId)
     {
         // cURL handler
-        $singleHandler   = (new Definition('GuzzleHttp\Ring\Client\CurlHandler'))
+        $singleHandler = (new Definition('GuzzleHttp\Ring\Client\CurlHandler'))
             ->setPublic(false);
 
         $this->setFactoryToDefinition('Elasticsearch\ClientBuilder', 'defaultHandler', $singleHandler);
@@ -131,7 +128,7 @@ class M6WebElasticsearchExtension extends Extension
         $container->setDefinition($headersHandlerId, $headersHandler);
 
         // Event handler
-        $eventHandler   = (new Definition('M6Web\Bundle\ElasticsearchBundle\Handler\EventHandler'))
+        $eventHandler = (new Definition('M6Web\Bundle\ElasticsearchBundle\Handler\EventHandler'))
             ->setPublic(false)
             ->setArguments([new Reference('event_dispatcher'), new Reference($headersHandlerId)]);
         $eventHandlerId = $definitionId.'.event_handler';
@@ -141,9 +138,8 @@ class M6WebElasticsearchExtension extends Extension
     }
 
     /**
-     * @param string     $className
-     * @param string     $method
-     * @param Definition $definition
+     * @param string $className
+     * @param string $method
      */
     private function setFactoryToDefinition($className, $method, Definition $definition)
     {
@@ -151,9 +147,6 @@ class M6WebElasticsearchExtension extends Extension
             ->setFactory([$className, $method]);
     }
 
-    /**
-     * @param ContainerBuilder $container
-     */
     protected function createDataCollector(ContainerBuilder $container)
     {
         $collectorDefinition = new Definition(
@@ -163,7 +156,7 @@ class M6WebElasticsearchExtension extends Extension
             'data_collector',
             [
                 'template' => '@M6WebElasticsearch/Collector/elasticsearch.html.twig',
-                'id'       => 'elasticsearch'
+                'id' => 'elasticsearch',
             ]
         );
 
@@ -171,7 +164,7 @@ class M6WebElasticsearchExtension extends Extension
             'kernel.event_listener',
             [
                 'event' => 'm6web.elasticsearch',
-                'method' => 'handleEvent'
+                'method' => 'handleEvent',
             ]
         );
 
