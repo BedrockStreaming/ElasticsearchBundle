@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace M6Web\Bundle\ElasticsearchBundle\Tests\Units\Elasticsearch\ConnectionPool\Selector;
 
 use atoum\atoum\test;
