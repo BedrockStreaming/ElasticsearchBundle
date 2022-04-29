@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace M6Web\Bundle\ElasticsearchBundle\Elasticsearch\ConnectionPool\Selector;
 
 use Elasticsearch\Common\Exceptions\NoNodesAvailableException;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace M6Web\Bundle\ElasticsearchBundle\Handler;
 
 use GuzzleHttp\Ring\Core;
