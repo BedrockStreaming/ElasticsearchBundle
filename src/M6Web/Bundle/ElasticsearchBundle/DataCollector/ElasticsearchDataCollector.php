@@ -31,7 +31,13 @@ class ElasticsearchDataCollector extends DataCollector
             'status_code' => $event->getStatusCode(),
             'duration' => $event->getDuration(),
             'took' => $event->getTook(),
-            'body' => json_decode($event->getBody()),
+            'body' => $event->getUri() != '/_msearch' ?
+                json_decode($event->getBody()) :
+                array_map(function ($str) {
+                    return json_decode($str);
+                },
+                    array_filter(explode(PHP_EOL, $event->getBody()))
+                ),
             'error' => $event->getError(),
         ];
         $this->data['queries'][] = $query;
