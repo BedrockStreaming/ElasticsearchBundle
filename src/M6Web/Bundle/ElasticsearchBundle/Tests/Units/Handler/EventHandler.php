@@ -52,12 +52,7 @@ class EventHandler extends atoum
             ->mock($eventDispatcher)->call('dispatch')->never();
     }
 
-    /**
-     * testDispatch data provider
-     *
-     * @return array
-     */
-    protected function testDispatchDataProvider()
+    protected function testDispatchDataProvider(): array
     {
         return [
             [

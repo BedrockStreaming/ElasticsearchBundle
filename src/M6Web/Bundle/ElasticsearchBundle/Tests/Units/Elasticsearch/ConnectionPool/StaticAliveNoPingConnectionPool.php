@@ -29,7 +29,7 @@ class StaticAliveNoPingConnectionPool extends test
 
             // Test returned class is a connection.
             ->then
-                ->object($firstConnectionReturned = $this->testedInstance->nextConnection($connections))
+                ->object($firstConnectionReturned = $this->testedInstance->nextConnection())
                     ->isIdenticalTo($first);
     }
 
@@ -44,7 +44,7 @@ class StaticAliveNoPingConnectionPool extends test
 
             // Test returned class is a connection.
             ->then
-                ->object($firstConnectionReturned = $this->testedInstance->nextConnection($connections))
+                ->object($firstConnectionReturned = $this->testedInstance->nextConnection())
                     ->isIdenticalTo($second);
     }
 
@@ -60,8 +60,8 @@ class StaticAliveNoPingConnectionPool extends test
             // Test returned class is a connection.
             ->then
                 ->exception(
-                    function () use ($connections) {
-                        $this->testedInstance->nextConnection($connections);
+                    function () {
+                        $this->testedInstance->nextConnection();
                     }
                 )
                     ->isInstanceOf(NoNodesAvailableException::class);

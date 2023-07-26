@@ -17,40 +17,29 @@ use Elasticsearch\Connections\ConnectionInterface;
  */
 class StaticAliveNoPingConnectionPool extends StaticNoPingConnectionPool
 {
-    /** @var int */
-    private $pingTimeout = 60;
-
-    /** @var int */
-    private $maxPingTimeout = 3600;
+    private int $pingTimeout = 60;
+    private int $maxPingTimeout = 3600;
 
     /**
      * > Allow to customize the ping time out.
-     *
-     * @param int $pingTimeout
      */
-    public function setPingTimeout($pingTimeout)
+    public function setPingTimeout(int $pingTimeout)
     {
         $this->pingTimeout = $pingTimeout;
     }
 
     /**
      * > Allow to customize the ping max time out.
-     *
-     * @param int $maxPingTimeout
      */
-    public function setMaxPingTimeout($maxPingTimeout)
+    public function setMaxPingTimeout(int $maxPingTimeout)
     {
         $this->maxPingTimeout = $maxPingTimeout;
     }
 
     /**
-     * @param bool $force
-     *
-     * @return Connection
-     *
-     * @throws \Elasticsearch\Common\Exceptions\NoNodesAvailableException
+     * @throws NoNodesAvailableException
      */
-    public function nextConnection($force = false): ConnectionInterface
+    public function nextConnection(bool $force = false): ConnectionInterface
     {
         // > Replace $this->connections by $connections in order to modify the list later.
         $connections = $this->connections;
@@ -80,10 +69,8 @@ class StaticAliveNoPingConnectionPool extends StaticNoPingConnectionPool
 
     /**
      * > Same as parent private method.
-     *
-     * @return bool
      */
-    protected function readyToRevive(Connection $connection)
+    protected function readyToRevive(Connection $connection): bool
     {
         $timeout = min(
             $this->pingTimeout * pow(2, $connection->getPingFailures()),

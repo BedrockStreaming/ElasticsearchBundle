@@ -48,27 +48,17 @@ class ElasticsearchDataCollector extends DataCollector
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'elasticsearch';
     }
 
-    /**
-     * Get queries
-     *
-     * @return array
-     */
-    public function getQueries()
+    public function getQueries(): array
     {
         return $this->data['queries'];
     }
 
-    /**
-     * Get total execution time
-     *
-     * @return float
-     */
-    public function getTotalExecutionTime()
+    public function getTotalExecutionTime(): float
     {
         return $this->data['total_execution_time'];
     }

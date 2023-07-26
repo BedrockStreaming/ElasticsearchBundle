@@ -98,12 +98,8 @@ class M6WebElasticsearchExtension extends Extension
 
     /**
      * Create request handler
-     *
-     * @param string $definitionId
-     *
-     * @return string
      */
-    protected function createHandler(ContainerBuilder $container, array $config, $definitionId)
+    protected function createHandler(ContainerBuilder $container, array $config, string $definitionId): string
     {
         // cURL handler
         $singleHandler = (new Definition('GuzzleHttp\Ring\Client\CurlHandler'))
@@ -136,11 +132,7 @@ class M6WebElasticsearchExtension extends Extension
         return $eventHandlerId;
     }
 
-    /**
-     * @param string $className
-     * @param string $method
-     */
-    private function setFactoryToDefinition($className, $method, Definition $definition)
+    private function setFactoryToDefinition(string $className, string $method, Definition $definition)
     {
         $definition
             ->setFactory([$className, $method]);

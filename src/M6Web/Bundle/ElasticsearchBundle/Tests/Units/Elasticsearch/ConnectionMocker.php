@@ -12,11 +12,9 @@ use Elasticsearch\Connections\Connection;
 trait ConnectionMocker
 {
     /**
-     * @param int $numberOfConnections
-     *
      * @return Connection[]
      */
-    protected function getConnectionMocks($numberOfConnections = 1)
+    protected function getConnectionMocks(int $numberOfConnections = 1): array
     {
         return array_map([$this, 'getConnectionMock'], array_fill(0, $numberOfConnections, []));
     }

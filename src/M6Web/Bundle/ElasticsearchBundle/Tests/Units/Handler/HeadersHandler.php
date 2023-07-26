@@ -44,12 +44,7 @@ class HeadersHandler extends atoum
         return $requestHandler;
     }
 
-    /**
-     * testInvoke data provider
-     *
-     * @return array
-     */
-    protected function testInvokeDataProvider()
+    protected function testInvokeDataProvider(): array
     {
         return [
             [
