@@ -181,11 +181,9 @@ class M6WebElasticsearchExtension extends test
     /**
      * Check if the client is correctly instanciated
      *
-     * @param string $clientName
-     *
      * @return M6WebElasticsearchExtension $this
      */
-    protected function clientIsCorrectlyInstanciated(ContainerInterface $container, $clientName)
+    protected function clientIsCorrectlyInstanciated(ContainerInterface $container, string $clientName)
     {
         $this
             ->object($container->get('m6web_elasticsearch.client.'.$clientName))

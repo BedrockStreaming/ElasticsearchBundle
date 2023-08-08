@@ -13,12 +13,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class EventHandler
 {
-    /**
-     * Event dispatcher
-     *
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
+    private EventDispatcherInterface $eventDispatcher;
 
     /**
      * CURL handler
@@ -36,12 +31,7 @@ class EventHandler
         $this->handler = $handler;
     }
 
-    /**
-     * Invoke
-     *
-     * @return \GuzzleHttp\Ring\Future\FutureArray
-     */
-    public function __invoke(array $request)
+    public function __invoke(array $request): \GuzzleHttp\Ring\Future\FutureArray
     {
         $handler = $this->handler;
 
@@ -76,12 +66,7 @@ class EventHandler
         return Core::proxy($handler($request), $dispatchEvent);
     }
 
-    /**
-     * Extract took from response
-     *
-     * @return int|null
-     */
-    protected function extractTookFromResponse(array $response)
+    protected function extractTookFromResponse(array $response): ?int
     {
         if (is_null($response['body'])) {
             return null;

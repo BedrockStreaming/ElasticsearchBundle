@@ -5,19 +5,11 @@ declare(strict_types=1);
 namespace M6Web\Bundle\ElasticsearchBundle\Handler;
 
 use GuzzleHttp\Ring\Core;
-use GuzzleHttp\Ring\Future\FutureInterface;
 
-/**
- * HeadersHandler
- */
 class HeadersHandler
 {
-    /**
-     * Headers
-     *
-     * @var array
-     */
-    private $headers = [];
+    /** Headers */
+    private array $headers = [];
 
     /**
      * Request handler
@@ -34,26 +26,13 @@ class HeadersHandler
         $this->handler = $handler;
     }
 
-    /**
-     * Set header
-     *
-     * @param string $key
-     * @param string $value
-     *
-     * @return $this
-     */
-    public function setHeader($key, $value)
+    public function setHeader(string $key, $value): self
     {
         $this->headers[$key] = $value;
 
         return $this;
     }
 
-    /**
-     * Invoke
-     *
-     * @return FutureInterface
-     */
     public function __invoke(array $request)
     {
         // By default, host is stored in headers and final url is forged later.

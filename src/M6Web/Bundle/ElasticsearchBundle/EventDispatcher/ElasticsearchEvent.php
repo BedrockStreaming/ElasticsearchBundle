@@ -6,201 +6,118 @@ namespace M6Web\Bundle\ElasticsearchBundle\EventDispatcher;
 
 use Symfony\Contracts\EventDispatcher\Event;
 
-/**
- * Class ElasticsearchEvent
- */
 class ElasticsearchEvent extends Event
 {
-    /** @var float duration of the Elasticsearch request in milliseconds */
-    private $duration;
+    /** duration of the Elasticsearch request in milliseconds */
+    private ?float $duration = null;
 
-    /** @var string HTTP method */
-    private $method;
+    /** HTTP method */
+    private ?string $method = null;
 
-    /** @var string Elasticsearch URI */
-    private $uri;
+    /** Elasticsearch URI */
+    private ?string $uri = null;
 
-    /** @var int HTTP status code */
-    private $statusCode;
+    /**  HTTP status code */
+    private ?int $statusCode = null;
 
-    /**
-     * Time in milliseconds for Elasticsearch to execute the search
-     *
-     * @var int
-     */
-    private $took;
+    /** Time in milliseconds for Elasticsearch to execute the search */
+    private ?int $took = null;
+    private array $headers = [];
 
-    /** @var array */
-    private $headers;
+    /** Body of the ES request */
+    private string $body = '';
+    private string $error = '';
 
-    /**
-     * Body of the ES request
-     *
-     * @var string
-     */
-    private $body;
-
-    /** @var string */
-    private $error;
-
-    /**
-     * @return float
-     */
-    public function getDuration()
+    public function getDuration(): ?float
     {
         return $this->duration;
     }
 
-    /**
-     * @param float $duration
-     *
-     * @return $this
-     */
-    public function setDuration($duration)
+    public function setDuration(float $duration): self
     {
         $this->duration = $duration;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getMethod()
+    public function getMethod(): ?string
     {
         return $this->method;
     }
 
-    /**
-     * @param string $method
-     *
-     * @return $this
-     */
-    public function setMethod($method)
+    public function setMethod(?string $method): self
     {
         $this->method = $method;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getUri()
+    public function getUri(): ?string
     {
         return $this->uri;
     }
 
-    /**
-     * @param string $uri
-     *
-     * @return $this
-     */
-    public function setUri($uri)
+    public function setUri(?string $uri): self
     {
         $this->uri = $uri;
 
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getStatusCode()
+    public function getStatusCode(): ?int
     {
         return $this->statusCode;
     }
 
-    /**
-     * @param int $statusCode
-     *
-     * @return $this
-     */
-    public function setStatusCode($statusCode)
+    public function setStatusCode(?int $statusCode): self
     {
         $this->statusCode = $statusCode;
 
         return $this;
     }
 
-    /**
-     * Get took
-     *
-     * @return int
-     */
-    public function getTook()
+    public function getTook(): ?int
     {
         return $this->took;
     }
 
-    /**
-     * Set took
-     *
-     * @param int $took
-     *
-     * @return $this
-     */
-    public function setTook($took)
+    public function setTook(?int $took): self
     {
         $this->took = $took;
 
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    public function getHeaders()
+    public function getHeaders(): array
     {
         return $this->headers;
     }
 
-    /**
-     * @param array $headers
-     *
-     * @return $this
-     */
-    public function setHeaders($headers)
+    public function setHeaders(array $headers): self
     {
         $this->headers = $headers;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getBody()
+    public function getBody(): string
     {
         return $this->body;
     }
 
-    /**
-     * @param string $body
-     *
-     * @return $this
-     */
-    public function setBody($body)
+    public function setBody(string $body): self
     {
         $this->body = $body;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getError()
+    public function getError(): string
     {
         return $this->error;
     }
 
-    /**
-     * @param string $error
-     *
-     * @return $this
-     */
-    public function setError($error)
+    public function setError(string $error): self
     {
         $this->error = $error;
 
